@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCP Facility - Host Panel & Guide</title>
+    <style>
+        :root {
+            --bg-color: #0d0d0d;
+            --panel-bg: #161616;
+            --accent-red: #b30000;
+            --accent-green: #00802b;
+            --text-color: #e0e0e0;
+            --border-color: #333333;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--panel-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(179, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+
+        header {
+            background: #111;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            position: relative;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #ff3333;
+            font-size: 24px;
+            letter-spacing: 2px;
+        }
+
+        /* Wybór języka w rogu */
+        .lang-container {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .lang-btn {
+            background: #222;
+            border: 1px solid var(--border-color);
+            padding: 5px 8px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+
+        .lang-btn:hover, .lang-btn.active {
+            background: #333;
+            border-color: #ff3333;
+        }
+
+        .tabs {
+            display: flex;
+            background: #1f1f1f;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .tab-btn:hover {
+            background: #2a2a2a;
+        }
+
+        .tab-btn.active {
+            background: var(--panel-bg);
+            color: #ff3333;
+            border-bottom: 3px solid var(--accent-red);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 25px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Styl zakładki Read */
+        .read-section h3 {
+            color: #ff4d4d;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 5px;
+        }
+
+        .read-section p, .read-section li {
+            line-height: 1.6;
+            color: #cccccc;
+        }
+
+        /* Styl zakładki Roleplay (Panel) */
+        .setting-group {
+            background: #111;
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .setting-label {
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .toggle-container {
+            display: flex;
+            gap: 5px;
+        }
+
+        .toggle-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            background: #222;
+            color: var(--text-color);
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .toggle-btn.yes.active {
+            background: var(--accent-green);
+            border-color: #00ff55;
+            color: #fff;
+        }
+
+        .toggle-btn.no.active {
+            background: var(--accent-red);
+            border-color: #ff1a1a;
+            color: #fff;
+        }
+
+        .output-box {
+            margin-top: 25px;
+            background: #0a0a0a;
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .output-box h4 {
+            margin-top: 0;
+            color: #ff3333;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80px;
+            background: #111;
+            color: #00ff55;
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            font-family: monospace;
+            resize: none;
+            box-sizing: border-box;
+        }
+
+        .copy-btn {
+            margin-top: 10px;
+            width: 100%;
+            padding: 12px;
+            background: #333;
+            color: #fff;
+            border: none;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #444;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1 id="ui-title">SCP FACILITY - HOST PANEL</h1>
+        <div class="lang-container">
+            <button class="lang-btn active" onclick="setLanguage('en')" title="English">🇺🇸</button>
+            <button class="lang-btn" onclick="setLanguage('ru')" title="Русский">🇷🇺</button>
+            <button class="lang-btn" onclick="setLanguage('pl')" title="Polski">🇵🇱</button>
+        </div>
+    </header>
+
+    <div class="tabs">
+        <button id="tab-read-btn" class="tab-btn active" onclick="switchTab(event, 'readTab')">Read (Guide)</button>
+        <button id="tab-rp-btn" class="tab-btn" onclick="switchTab(event, 'roleplayTab')">Roleplay (Host Panel)</button>
+    </div>
+
+    <!-- ZAKŁADKA READ -->
+    <div id="readTab" class="tab-content active read-section">
+        <h3 id="r-h1">[WELCOME] Thank you for downloading!</h3>
+        <p id="r-p1">Thank you for downloading my map! I hope you will enjoy it a lot, because this map was specially made for fun and roleplay.</p>
+        
+        <h3 id="r-h2">Important Mod Warning</h3>
+        <p id="r-p2">If anyone has not downloaded the required mods, unfortunately, some features might not work for them or across the whole server—unless everyone has everything installed. Thank you!</p>
+
+        <h3 id="r-h3">Host Permissions & Rules</h3>
+        <p id="r-p3">As the host, you can give or deny permission for certain actions. For example, if strikes are set to "NO" in the config, a player cannot just start a strike unless you specifically give that individual player permission to do so. You can play normal roleplay as a host, but you hold higher administrative owner permissions.</p>
+
+        <h3 id="r-h4">Recommended Settings</h3>
+        <p id="r-p4">We strongly recommend turning everything ON for the best and most interesting roleplay experience. Everything should be enabled to fully enjoy the facility features.</p>
+
+        <h3 id="r-h5">Performance & Management Tips</h3>
+        <p id="r-p5">To reduce lag and manage the facility properly, you need to spawn the SCPs using the provided items/eggs, and then eliminate them using the special wooden sword found in our chest after tests are completed.</p>
+
+        <!-- DODANE NOWE PUNKTY -->
+        <h3 id="r-h6">World Settings & Alpha Warhead Warning</h3>
+        <p id="r-p6">We advise against changing default world settings as everything is built specifically for this roleplay. Also, we strongly advise against detonating the Alpha Warhead (nuke) unless intended—it will blow the map to pieces and leave a massive crater to the void!</p>
+
+        <h3 id="r-h7">Shaders & Visuals</h3>
+        <p id="r-p7">The map was created with shaders enabled. If playing on Vanilla graphics and something looks off (e.g. glowing blocks), feel free to adjust visual options yourself.</p>
+
+        <h3 id="r-h8" style="color: #ff1a1a;">CRITICAL WARNING: Scarlet King Safe Mode</h3>
+        <p id="r-p8">DO NOT change the gamerule "Scarlet King Safe Mode" to FALSE under any circumstances! Spawning the Scarlet King with this setting disabled will completely destroy the map beyond repair.</p>
+    </div>
+
+    <!-- ZAKŁADKA ROLEPLAY (PANEL) -->
+    <div id="roleplayTab" class="tab-content">
+        <p id="p-desc" style="color: #aaa; margin-top: 0;">Configure session parameters for players (nothing is selected by default):</p>
+
+        <!-- Opcja 1 -->
+        <div class="setting-group">
+            <span id="lbl-scp" class="setting-label">1. SCP Objects (Are SCPs active on the map?)</span>
+            <div class="toggle-container">
+                <button class="toggle-btn yes" onclick="setToggle(this, 'scp', 'YES')">YES</button>
+                <button class="toggle-btn no" onclick="setToggle(this, 'scp', 'NO')">NO</button>
+            </div>
+        </div>
+
+        <!-- Opcja 2 -->
+        <div class="setting-group">
+            <span id="lbl-strikes" class="setting-label">2. Class-D Strikes (Permission for strikes / riots)</span>
+            <div class="toggle-container">
+                <button class="toggle-btn yes" onclick="setToggle(this, 'strikes', 'YES')">YES</button>
+                <button class="toggle-btn no" onclick="setToggle(this, 'strikes', 'NO')">NO</button>
+            </div>
+        </div>
+
+        <!-- Opcja 3 -->
+        <div class="setting-group">
+            <span id="lbl-freedom" class="setting-label">3. Leaving Cells (Can Class-D leave cells freely?)</span>
+            <div class="toggle-container">
+                <button class="toggle-btn yes" onclick="setToggle(this, 'freedom', 'YES')">YES</button>
+                <button class="toggle-btn no" onclick="setToggle(this, 'freedom', 'NO')">NO</button>
+            </div>
+        </div>
+
+        <!-- Opcja 4 -->
+        <div class="setting-group">
+            <span id="lbl-ranks" class="setting-label">4. Rank Changes (Can players change ranks, e.g., Class-D to Guard?)</span>
+            <div class="toggle-container">
+                <button class="toggle-btn yes" onclick="setToggle(this, 'ranks', 'YES')">YES</button>
+                <button class="toggle-btn no" onclick="setToggle(this, 'ranks', 'NO')">NO</button>
+            </div>
+        </div>
+
+        <!-- Opcja 5 (DODANA OPCJA) -->
+        <div class="setting-group">
+            <span id="lbl-outside" class="setting-label">5. Leaving Facility (Permission to go outside)</span>
+            <div class="toggle-container">
+                <button class="toggle-btn yes" onclick="setToggle(this, 'outside', 'YES')">YES</button>
+                <button class="toggle-btn no" onclick="setToggle(this, 'outside', 'NO')">NO</button>
+            </div>
+        </div>
+
+        <!-- Generator komendy -->
+        <div class="output-box">
+            <h4 id="cmd-title">Generated Server Command:</h4>
+            <textarea id="commandOutput" readonly>/tellraw @a {"text":"[SCP CONFIG] SCPs: NOT SET | Strikes: NOT SET | Leaving Cells: NOT SET | Rank Changes: NOT SET | Leaving Facility: NOT SET","color":"gold"}</textarea>
+            <button id="copy-btn-text" class="copy-btn" onclick="copyCommand()">COPY COMMAND TO CLIPBOARD</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentLang = 'en';
+    let settings = {
+        scp: 'NOT SET',
+        strikes: 'NOT SET',
+        freedom: 'NOT SET',
+        ranks: 'NOT SET',
+        outside: 'NOT SET'
+    };
+
+    const translations = {
+        en: {
+            title: "SCP FACILITY - HOST PANEL",
+            tabRead: "Read (Guide)",
+            tabRp: "Roleplay (Host Panel)",
+            rh1: "[WELCOME] Thank you for downloading!",
+            rp1: "Thank you for downloading my map! I hope you will enjoy it a lot, because this map was specially made for fun and roleplay.",
+            rh2: "Important Mod Warning",
+            rp2: "If anyone has not downloaded the required mods, unfortunately, some features might not work for them or across the whole server—unless everyone has everything installed. Thank you!",
+            rh3: "Host Permissions & Rules",
+            rp3: "As the host, you can give or deny permission for certain actions. For example, if strikes are set to " + '"' + "NO" + '"' + " in the config, a player cannot just start a strike unless you specifically give that individual player permission to do so. You can play normal roleplay as a host, but you hold higher administrative owner permissions.",
+            rh4: "Recommended Settings",
+            rp4: "We strongly recommend turning everything ON for the best and most interesting roleplay experience. Everything should be enabled to fully enjoy the facility features.",
+            rh5: "Performance & Management Tips",
+            rp5: "To reduce lag and manage the facility properly, you need to spawn the SCPs using the provided items/eggs, and then eliminate them using the special wooden sword found in our chest after tests are completed.",
+            rh6: "World Settings & Alpha Warhead Warning",
+            rp6: "We advise against changing default world settings as everything is built specifically for this roleplay. Also, we strongly advise against detonating the Alpha Warhead (nuke) unless intended—it will blow the map to pieces and leave a massive crater to the void!",
+            rh7: "Shaders & Visuals",
+            rp7: "The map was created with shaders enabled. If playing on Vanilla graphics and something looks off (e.g. glowing blocks), feel free to adjust visual options yourself.",
+            rh8: "CRITICAL WARNING: Scarlet King Safe Mode",
+            rp8: "DO NOT change the gamerule " + '"' + "Scarlet King Safe Mode" + '"' + " to FALSE under any circumstances! Spawning the Scarlet King with this setting disabled will completely destroy the map beyond repair.",
+            pDesc: "Configure session parameters for players (nothing is selected by default):",
+            lblScp: "1. SCP Objects (Are SCPs active on the map?)",
+            lblStrikes: "2. Class-D Strikes (Permission for strikes / riots)",
+            lblFreedom: "3. Leaving Cells (Can Class-D leave cells freely?)",
+            lblRanks: "4. Rank Changes (Can players change ranks, e.g., Class-D to Guard?)",
+            lblOutside: "5. Leaving Facility (Permission to go outside)",
+            cmdTitle: "Generated Server Command:",
+            copyBtn: "COPY COMMAND TO CLIPBOARD",
+            copiedAlert: "Command copied to clipboard!",
+            yesText: "YES",
+            noText: "NO",
+            notSet: "NOT SET"
+        },
+        ru: {
+            title: "КОМПЛЕКС SCP - ПАНЕЛЬ ХОСТА",
+            tabRead: "Читать (Гайд)",
+            tabRp: "Ролплей (Панель хоста)",
+            rh1: "[ДОБРО ПОЖАЛОВАТЬ] Спасибо за скачивание!",
+            rp1: "Спасибо за скачивание моей карты! Надеюсь, она вам очень понравится, так как эта карта создана специально для веселья и ролевой игры.",
+            rh2: "Важное предупреждение о модах",
+            rp2: "Если кто-то не скачал обязательные моды, к сожалению, некоторые функции могут не работать у них или на всем сервере — если только у всех все не установлено. Спасибо!",
+            rh3: "Права хоста и правила",
+            rp3: "Как хост, вы можете разрешать или запрещать определенные действия. Например, если бунты установлены на «НЕТ», игрок не может начать бунт, пока вы лично не разрешите ему это. Вы можете играть с обычным ролеплеем в роли хоста, но у вас есть расширенные права владельца.",
+            rh4: "Рекомендуемые настройки",
+            rp4: "Мы настоятельно рекомендуем включить абсолютно всё для лучшего и наиболее интересного ролеплея. Всё должно быть включено, чтобы полностью прочувствовать возможности комплекса.",
+            rh5: "Советы по производительности и управлению",
+            rp5: "Чтобы уменьшить лаги и правильно управлять комплексом, вам нужно спавнить SCP с помощью выданных предметов/яиц призыва, а затем уничтожать их с помощью специального деревянного меча, найденного в нашем сундуке после завершения тестов.",
+            rh6: "Настройки мира и Атомная Боеголовка",
+            rp6: "Мы не рекомендуем менять стандартные настройки мира. Также крайне не рекомендуем взрывать атомную боеголовку, иначе вся карта взлетит на воздух и останется огромный кратер!",
+            rh7: "Шейдеры и графика",
+            rp7: "Карта создавалась с шейдерами. Если вы играете на ваниле и что-то выглядит странно, можете подстроить графические параметры под себя.",
+            rh8: "ВАЖНОЕ ПРЕДУПРЕЖДЕНИЕ: Scarlet King Safe Mode",
+            rp8: "Ни в коем случае не меняйте gamerule Scarlet King Safe Mode на FALSE! Спавн Алого Короля при отключенном режиме уничтожит карту безвозвратно.",
+            pDesc: "Настройте параметры сессии для игроков (по умолчанию ничего не выбрано):",
+            lblScp: "1. Объекты SCP (Активны ли SCP на карте?)",
+            lblStrikes: "2. Бунты класса-D (Разрешение на забастовки / бунты)",
+            lblFreedom: "3. Выход из камер (Могут ли классы-D свободно выходить?)",
+            lblRanks: "4. Смена рангов (Могут ли игроки менять ранг, например Class-D на Охрану?)",
+            lblOutside: "5. Выход из комплекса (Разрешение выходить наружу)",
+            cmdTitle: "Сгенерированная команда сервера:",
+            copyBtn: "СКОПИРОВАТЬ КОМАНДУ В БУФЕР",
+            copiedAlert: "Команда скопирована в буфер обмена!",
+            yesText: "ДА",
+            noText: "НЕТ",
+            notSet: "НЕ ЗАДАНО"
+        },
+        pl: {
+            title: "PLACÓWKA SCP - PANEL HOSTA",
+            tabRead: "Czytaj (Poradnik)",
+            tabRp: "Roleplay (Panel Hosta)",
+            rh1: "[WITAMY] Dziękuję za pobranie!",
+            rp1: "Dziękuję za pobranie mojej mapy! Mam nadzieję, że Ci się bardzo spodoba, ponieważ ta mapa została specjalnie zrobiona pod zabawę i roleplay.",
+            rh2: "Ważna uwaga dotycząca modów",
+            rp2: "Jeżeli ktokolwiek z Was nie pobrał modów, niestety u niego mogą nie działać niektóre funkcje lub na całym serwerze – chyba że każdy ma wszystko zainstalowane. Dziękuję!",
+            rh3: "Uprawnienia Hosta i Zasady",
+            rp3: "Jako host możesz wyrażać zgodę lub jej zabraniać na pewne akcje. Na przykład, jeśli strajki są ustawione na „NIE”, gracz nie może po prostu zacząć strajku, chyba że dasz temu konkretnemu graczowi pozwolenie. Możesz normalnie prowadzić roleplay jako host, ale masz wyższe uprawnienia właścicielskie.",
+            rh4: "Zalecane Ustawienia",
+            rp4: "Polecamy zaznaczyć wszystko (włączyć wszystko), aby uzyskać najlepszą i najciekawszą rozgrywkę roleplay. Wszystko powinno być aktywne, aby w pełni cieszyć się mapą.",
+            rh5: "Wskazówki dotyczące wydajności i zarządzania",
+            rp5: "Aby zredukować lagi i odpowiednio zarządzać obiektem, musisz najpierw zespawnować SCP za pomocą przygotowanych jajek, a po zakończonych testach eliminować je za pomocą specjalnego drewnianego miecza z naszej skrzynki.",
+            rh6: "Ustawienia Świata i Atomówka",
+            rp6: "Odradzamy zmienianie domyślnych ustawień świata. Odradzamy również detonowanie atomówki, no chyba że bardzo chcecie — wybuch rozwali mapę w piz*dec i zostawi wielki krater do próżni!",
+            rh7: "Shadery i Grafika",
+            rp7: "Gra została zrobiona na shaderach. Jeżeli na vanillii coś wygląda inaczej (np. wydaje Ci się, że coś powinno się świecić), możesz to samodzielnie poprawić w grze.",
+            rh8: "KATEGORYCZNY ZAKAZ: Scarlet King Safe Mode",
+            rp8: "Za żadne grzechy nie wyłączaj gamerule Scarlet King Safe Mode (nie ustawiaj na FALSE)! Zrespienie go przy wyłączonym trybie awaryjnym rozwali całą mapę nie do uratowania.",
+            pDesc: "Skonfiguruj parametry sesji dla graczy (domyślnie nic nie jest zaznaczone):",
+            lblScp: "1. Obiekty SCP (Czy obiekty SCP są aktywne na mapie?)",
+            lblStrikes: "2. Strajki Klasy-D (Zezwolenie na strajki / bunt)",
+            lblFreedom: "3. Opuszczanie cel (Czy klasa D może wychodzić z cel?)",
+            lblRanks: "4. Zmiana rang (Czy gracze mogą zmienić rangę np. z D na Guarda?)",
+            lblOutside: "5. Opuszczanie placówki (Zezwolenie na wyjście na dwór)",
+            cmdTitle: "Wygenerowana komenda dla serwera:",
+            copyBtn: "SKOPIRUJ KOMENDĘ DO SCHOWKA",
+            copiedAlert: "Skopiowano komendę do schowka!",
+            yesText: "TAK",
+            noText: "NIE",
+            notSet: "NIE USTALONO"
+        }
+    };
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+
+        let t = translations[lang];
+
+        document.getElementById("ui-title").innerText = t.title;
+        document.getElementById("tab-read-btn").innerText = t.tabRead;
+        document.getElementById("tab-rp-btn").innerText = t.tabRp;
+
+        document.getElementById("r-h1").innerText = t.rh1;
+        document.getElementById("r-p1").innerText = t.rp1;
+        document.getElementById("r-h2").innerText = t.rh2;
+        document.getElementById("r-p2").innerText = t.rp2;
+        document.getElementById("r-h3").innerText = t.rh3;
+        document.getElementById("r-p3").innerText = t.rp3;
+        document.getElementById("r-h4").innerText = t.rh4;
+        document.getElementById("r-p4").innerText = t.rp4;
+        document.getElementById("r-h5").innerText = t.rh5;
+        document.getElementById("r-p5").innerText = t.rp5;
+        document.getElementById("r-h6").innerText = t.rh6;
+        document.getElementById("r-p6").innerText = t.rp6;
+        document.getElementById("r-h7").innerText = t.rh7;
+        document.getElementById("r-p7").innerText = t.rp7;
+        document.getElementById("r-h8").innerText = t.rh8;
+        document.getElementById("r-p8").innerText = t.rp8;
+
+        document.getElementById("p-desc").innerText = t.pDesc;
+        document.getElementById("lbl-scp").innerText = t.lblScp;
+        document.getElementById("lbl-strikes").innerText = t.lblStrikes;
+        document.getElementById("lbl-freedom").innerText = t.lblFreedom;
+        document.getElementById("lbl-ranks").innerText = t.lblRanks;
+        document.getElementById("lbl-outside").innerText = t.lblOutside;
+
+        document.getElementById("cmd-title").innerText = t.cmdTitle;
+        document.getElementById("copy-btn-text").innerText = t.copyBtn;
+
+        document.querySelectorAll('.toggle-btn.yes').forEach(b => b.innerText = t.yesText);
+        document.querySelectorAll('.toggle-btn.no').forEach(b => b.innerText = t.noText);
+
+        for (let key in settings) {
+            if (settings[key] === 'YES' || settings[key] === 'ДА' || settings[key] === 'TAK') settings[key] = t.yesText;
+            else if (settings[key] === 'NO' || settings[key] === 'НЕТ' || settings[key] === 'NIE') settings[key] = t.noText;
+            else settings[key] = t.notSet;
+        }
+        updateCommand();
+    }
+
+    function switchTab(evt, tabName) {
+        let contents = document.getElementsByClassName("tab-content");
+        for (let c of contents) c.classList.remove("active");
+
+        let buttons = document.getElementsByClassName("tab-btn");
+        for (let b of buttons) b.classList.remove("active");
+
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+
+    function setToggle(button, key, valType) {
+        let t = translations[currentLang];
+        let actualVal = (valType === 'YES') ? t.yesText : t.noText;
+        
+        settings[key] = actualVal;
+        let parent = button.parentElement;
+        let buttons = parent.getElementsByClassName("toggle-btn");
+        for (let b of buttons) b.classList.remove("active");
+        button.classList.add("active");
+
+        updateCommand();
+    }
+
+    function updateCommand() {
+        let text = `[SCP CONFIG] SCPs: ${settings.scp} | Strikes: ${settings.strikes} | Cells: ${settings.freedom} | Ranks: ${settings.ranks} | Outside: ${settings.outside}`;
+        let command = `/tellraw @a {"text":"${text}","color":"gold"}`;
+        document.getElementById("commandOutput").value = command;
+    }
+
+    function copyCommand() {
+        let copyText = document.getElementById("commandOutput");
+        copyText.select();
+        document.execCommand("copy");
+        alert(translations[currentLang].copiedAlert);
+    }
+</script>
+
+</body>
+</html>
